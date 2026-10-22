@@ -1,0 +1,413 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SMS Shield | Scam Detection</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0f9ff;
+            color: #243b53;
+            min-height: 100vh;
+        }
+
+        header {
+            background: white;
+            padding: 20px 7%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #dbeafe;
+        }
+
+        .brand {
+            font-size: 22px;
+            font-weight: bold;
+            color: #0284c7;
+        }
+
+        .brand span {
+            color: #15334b;
+        }
+
+        .header-note {
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 55px 10px 35px;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 8px 15px;
+            background: #dff4ff;
+            color: #0284c7;
+            border-radius: 30px;
+            font-size: 11px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        h1 {
+            margin: 20px 0 15px;
+            color: #15334b;
+            font-size: clamp(34px, 5vw, 48px);
+            line-height: 1.2;
+        }
+
+        h1 span {
+            color: #0284c7;
+        }
+
+        .hero p {
+            max-width: 600px;
+            margin: auto;
+            color: #64748b;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        .layout {
+            display: grid;
+            grid-template-columns: 1fr 290px;
+            gap: 25px;
+            align-items: start;
+        }
+
+        .card {
+            background: white;
+            padding: 28px;
+            border: 1px solid #dbeafe;
+            border-radius: 18px;
+            box-shadow: 0 10px 30px rgba(2, 132, 199, 0.08);
+        }
+
+        .card h2 {
+            color: #15334b;
+            font-size: 20px;
+            margin-bottom: 8px;
+        }
+
+        .subheading {
+            color: #64748b;
+            font-size: 13px;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 14px;
+            font-weight: bold;
+            color: #15334b;
+        }
+
+        textarea {
+            display: block;
+            width: 100%;
+            min-height: 175px;
+            padding: 16px;
+            border: 1px solid #bfdbfe;
+            border-radius: 12px;
+            background: #fbfdff;
+            color: #243b53;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            line-height: 1.7;
+            resize: vertical;
+            outline: none;
+        }
+
+        textarea:focus {
+            border-color: #38bdf8;
+            box-shadow: 0 0 0 3px #e0f2fe;
+        }
+
+        textarea::placeholder {
+            color: #94a3b8;
+        }
+
+        .counter {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin: 10px 0 20px;
+            font-size: 11px;
+            color: #64748b;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            background: #0284c7;
+            border: none;
+            border-radius: 11px;
+            color: white;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        button:hover {
+            background: #0369a1;
+        }
+
+        .result {
+            margin-top: 24px;
+            padding: 20px;
+            border: 1px solid #bae6fd;
+            border-radius: 13px;
+            background: #f0f9ff;
+        }
+
+        .result.warning {
+            background: #fff8eb;
+            border-color: #f4d5a1;
+        }
+
+        .result-label {
+            margin-bottom: 9px;
+            color: #64748b;
+            font-size: 11px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .result h3 {
+            margin-bottom: 12px;
+            color: #0369a1;
+            font-size: 20px;
+        }
+
+        .result.warning h3 {
+            color: #9a5b00;
+        }
+
+        .result p {
+            font-size: 13px;
+            line-height: 1.8;
+            overflow-wrap: anywhere;
+        }
+
+        .confidence {
+            margin-top: 12px;
+            color: #64748b;
+        }
+
+        .side-card {
+            background: white;
+            padding: 24px;
+            border: 1px solid #dbeafe;
+            border-radius: 18px;
+        }
+
+        .side-card h3 {
+            margin-bottom: 20px;
+            color: #15334b;
+            font-size: 17px;
+        }
+
+        .tip {
+            margin-bottom: 22px;
+        }
+
+        .tip strong {
+            display: block;
+            margin-bottom: 6px;
+            color: #0284c7;
+            font-size: 13px;
+        }
+
+        .tip p {
+            color: #64748b;
+            font-size: 12px;
+            line-height: 1.7;
+        }
+
+        .notice {
+            padding: 14px;
+            border-radius: 10px;
+            background: #e0f2fe;
+            color: #31566d;
+            font-size: 12px;
+            line-height: 1.8;
+        }
+
+        footer {
+            margin-top: 40px;
+            padding: 22px 10px;
+            border-top: 1px solid #dbeafe;
+            text-align: center;
+            color: #64748b;
+            font-size: 11px;
+            line-height: 1.8;
+        }
+
+        @media (max-width: 750px) {
+            .layout {
+                grid-template-columns: 1fr;
+            }
+
+            .hero {
+                padding-top: 40px;
+            }
+
+            .card {
+                padding: 21px;
+            }
+
+            .header-note {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <div class="brand">🛡 SMS <span>SHIELD</span></div>
+    <div class="header-note">Smart Message Screening</div>
+</header>
+
+<main class="container">
+
+    <section class="hero">
+        <div class="tag">SMS SECURITY CHECK</div>
+
+        <h1>Think before<br><span>you click.</span></h1>
+
+        <p>
+            Review suspicious text messages using our machine-learning
+            screening tool. Check common spam patterns before you respond.
+        </p>
+    </section>
+
+    <section class="layout">
+
+        <div class="card">
+            <h2>Check your message</h2>
+
+            <p class="subheading">
+                Paste the text message you want to check in the box below.
+            </p>
+
+            <form method="POST" action="/">
+                <label for="message">SMS message</label>
+
+                <textarea
+                    id="message"
+                    name="message"
+                    placeholder="Paste your SMS message here..."
+                    maxlength="5000"
+                    required></textarea>
+
+                <div class="counter">
+                    <span>Keep your PINs and passwords private.</span>
+                    <span id="count">0 / 5000</span>
+                </div>
+
+                <button type="submit">Analyze Message →</button>
+            </form>
+
+            {% if result %}
+            <div class="result {% if result == 'Potential Spam' %}warning{% endif %}">
+                <div class="result-label">SCREENING RESULT</div>
+
+                <h3>{{ result }}</h3>
+
+                {% if result == 'Potential Spam' %}
+                <p>
+                    This message resembles patterns found in spam.
+                    Avoid suspicious links and requests for money,
+                    passwords or PINs. Verify the sender independently.
+                </p>
+                {% else %}
+                <p>
+                    The model did not identify strong spam patterns.
+                    This does not guarantee that the message is genuine
+                    or safe.
+                </p>
+                {% endif %}
+
+                <p class="confidence">
+                    Model confidence for its predicted class:
+                    <strong>{{ confidence }}%</strong>
+                </p>
+            </div>
+            {% endif %}
+        </div>
+
+        <aside class="side-card">
+            <h3>Stay protected</h3>
+
+            <div class="tip">
+                <strong>🔐 Protect your details</strong>
+                <p>Never share your PIN, password or verification code through SMS.</p>
+            </div>
+
+            <div class="tip">
+                <strong>🔗 Check suspicious links</strong>
+                <p>Avoid links in unexpected messages from unknown senders.</p>
+            </div>
+
+            <div class="tip">
+                <strong>🎁 Verify prize claims</strong>
+                <p>Be careful with unexpected prizes and urgent money requests.</p>
+            </div>
+
+            <div class="tip">
+                <strong>👤 Confirm the sender</strong>
+                <p>Contact the organisation using a trusted phone number.</p>
+            </div>
+
+            <div class="notice">
+                <strong>Important:</strong> This tool provides screening
+                support only. Its predictions cannot guarantee that a
+                message is safe or fraudulent.
+            </div>
+        </aside>
+
+    </section>
+
+</main>
+
+<footer>
+    <p>SMS Shield | Machine-Learning SMS Screening Support</p>
+    <p>Verify before you trust.</p>
+</footer>
+
+<script>
+    const messageBox = document.getElementById("message");
+    const counter = document.getElementById("count");
+
+    function updateCounter() {
+        counter.textContent = messageBox.value.length + " / 5000";
+    }
+
+    messageBox.addEventListener("input", updateCounter);
+    updateCounter();
+</script>
+
+</body>
+</html>
